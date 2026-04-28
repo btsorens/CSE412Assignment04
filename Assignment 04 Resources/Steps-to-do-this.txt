@@ -1,0 +1,42 @@
+#Create the Database & Table:
+
+CREATE DATABASE product_db;
+
+-- Create a table to store product details
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    description TEXT
+);
+
+-- Insert some sample data
+INSERT INTO products (name, description) VALUES 
+('Laptop', 'A high-performance laptop for gaming and work'),
+('Smartphone', 'Latest model smartphone with advanced features'),
+('Headphones', 'Noise-cancelling headphones for better audio experience'),
+('Tablet', 'Portable tablet for entertainment and work on the go');
+
+
+#Create an Index for Fast Keyword Search 
+
+CREATE INDEX products_name_description_idx ON products USING gin(to_tsvector('english', name || ' ' || description));
+
+
+#Back-End (Python Flask Example)
+
+pip install Flask psycopg2
+
+#Then create app.py for the back-end
+
+#Then Front-End (HTML, CSS, JavaScript)
+#Keep it under templates/index.html
+
+#Run the Application
+
+python app.py
+
+Open your web browser and navigate to:
+
+http://127.0.0.1:5000/.
+
+
