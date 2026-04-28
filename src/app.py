@@ -48,8 +48,14 @@ def index():
                                     WHERE r1.column = ***
                                     """
                                     
+        # measure query time
+        startTime = time.perf_counter()
+        #execute query
         cursor.execute(sqlQueryOnDatabase, (f"%{queryValue}%",))
+        #retrieve results
         queryResults = cursor.fetchall()
+        endTime = time.perf_counter()
+        executionTimer = (endTime - startTime) * 1000 #execution timer in milliseconds
 
         cursor.close()
         databaseConnection.close()
