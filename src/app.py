@@ -76,7 +76,7 @@ def index():
         cursor.close()
         databaseConnection.close()
     
-    return render_template("frontEndQueryTool.html", returnedSearchResults=querySearchResults, executionTime=executionTimer)
+    return render_template("index.html", returnedSearchResults=querySearchResults, executionTime=executionTimer)
 
 if __name__ == "__main__":
     app.run(debug=True)
