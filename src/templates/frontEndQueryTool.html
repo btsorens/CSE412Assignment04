@@ -76,9 +76,14 @@
             <h3>Search Results:</h3>
             {% for result in returnedSearchResults %}
                 <div class="result-item">
-                    <strong>{{ result[1] }}</strong><br>
-                    {{ result[2] }}
-                </div>
+                    {% if result|length == 5 and result[0] is number %}
+                        <strong>{{ result[1] }} {{result[2]}} </strong> (ID: {{result[0]}})<br>
+                        <em>Position:</em> {{ result[3] }} | <em>Hometown:</em> {{result[4]}}
+                    {% else %}
+                        <strong>{{ result[0] }} {{ result[1] }}</strong><br>
+                        <em>Game Date:</em> {{ result[2] }} | <em>Stadium:</em> {{ result[3] }} | <em>Points:</em> {{ result[4] }}
+                    {% endif %}
+                    </div>
             {% endfor %}
         {% else %}
             <p>No results found</p>

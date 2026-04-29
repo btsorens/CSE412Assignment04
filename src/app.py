@@ -46,7 +46,12 @@ def index():
         # Define search query based on options
         sqlQueryOnDatabase = ""
         if queryOptions == "singleQuery":
-            sqlQueryOnDatabase = "SELECT player_id, first_name, last_name, position, hometown FROM players WHERE last_name LIKE %s LIMIT 5;"
+            sqlQueryOnDatabase = """
+                SELECT player_id, first_name, last_name, position, hometown 
+                FROM players 
+                WHERE last_name LIKE %s 
+                LIMIT 5;
+            """
         else:
             sqlQueryOnDatabase = """
                 SELECT p.first_name, p.last_name, gs.date_of_game, gs.stadium_name, gs.points
@@ -54,6 +59,7 @@ def index():
                 JOIN gamestats gs
                 ON p.player_id = gs.player_id
                 WHERE p.last_name LIKE %s
+                LIMIT 5;
             """
                                     
         # measure query time
