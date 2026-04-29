@@ -1,15 +1,19 @@
 import psycopg2
 import time
 from flask import Flask, render_template, request
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
 # based on example app.py get_db_connection()
 def connectToDatabase():
     connection = psycopg2.connect(
-        dbname="brocks_database",
-        user="fasta",
-        password="PASSWORD",
+        dbname="Football",
+        user="postgres",
+        password=os.getenv("YOUR_PASSWORD"),
         host="localhost"
     )
 
@@ -20,6 +24,7 @@ def connectToDatabase():
 def index():
     querySearchResults = []
     executionTimer = None
+    queryType = None
 
     if request.method == "POST":
         queryValue = request.form.get("searchValue")
@@ -30,30 +35,41 @@ def index():
         cursor = databaseConnection.cursor()
         
         if queryMode == "indexed":
-            cursor.execute("CREATE INDEX IF NOT EXISTS column_index ON relation(column);")
-        
+            cursor.execute("CREATE INDEX IF NOT EXISTS last_name_index ON players(last_name);")
+            cursor.execute("CREATE INDEX IF NOT EXISTS player_id_index ON gamestats(player_id);")
         else:
-            cursor.execute("DROP INDEX IF EXISTS column_index;")
+            cursor.execute("DROP INDEX IF EXISTS last_name_index;")
+            cursor.execute("DROP INDEX IF EXISTS player_id_index;")
+
+        databaseConnection.commit() # commit index or drop index
 
         # Define search query based on options
         sqlQueryOnDatabase = ""
         if queryOptions == "singleQuery":
-            sqlQueryOnDatabase = "SELECT * FROM relation WHERE column=***"
+            sqlQueryOnDatabase = """
+                SELECT player_id, first_name, last_name, position, hometown 
+                FROM players 
+                WHERE last_name LIKE %s 
+                ORDER BY last_name ASC, first_name ASC
+                LIMIT 5;
+            """
         else:
-            sqlQueryOnDatabase =    """
-                                    SELECT r1.column, r2.column
-                                    FROM relation1 r1
-                                    JOIN relation2 r2
-                                    ON r1.id = r2.fid
-                                    WHERE r1.column = ***
-                                    """
+            sqlQueryOnDatabase = """
+                SELECT p.first_name, p.last_name, gs.date_of_game, gs.stadium_name, gs.points
+                FROM players p
+                JOIN gamestats gs
+                ON p.player_id = gs.player_id
+                WHERE p.last_name LIKE %s
+                ORDER BY p.last_name ASC, p.first_name ASC
+                LIMIT 5;
+            """
                                     
         # measure query time
         startTime = time.perf_counter()
         #execute query
         cursor.execute(sqlQueryOnDatabase, (f"%{queryValue}%",))
         #retrieve results
-        queryResults = cursor.fetchall()
+        querySearchResults = cursor.fetchall()
         endTime = time.perf_counter()
         executionTimer = (endTime - startTime) * 1000 #execution timer in milliseconds
 
@@ -61,3 +77,6 @@ def index():
         databaseConnection.close()
     
     return render_template("frontEndQueryTool.html", returnedSearchResults=querySearchResults, executionTime=executionTimer)
+
+if __name__ == "__main__":
+    app.run(debug=True)
