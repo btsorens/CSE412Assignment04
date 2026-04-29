@@ -50,6 +50,7 @@ def index():
                 SELECT player_id, first_name, last_name, position, hometown 
                 FROM players 
                 WHERE last_name LIKE %s 
+                ORDER BY last_name ASC, first_name ASC
                 LIMIT 5;
             """
         else:
@@ -59,6 +60,7 @@ def index():
                 JOIN gamestats gs
                 ON p.player_id = gs.player_id
                 WHERE p.last_name LIKE %s
+                ORDER BY p.last_name ASC, p.first_name ASC
                 LIMIT 5;
             """
                                     

@@ -1,3 +1,8 @@
+<!--    CSE 412 Assignment 04
+        Football database Query Tool
+        Brock Sorenson
+        1220958154  -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,45 +12,42 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             background-color: #f4f4f9;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 25px;
             background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
+            border-radius: 8px;
         }.search-box {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
-            margin-bottom: 20px;
-        }
-        .results {
-            margin-top: 20px;
-        }
-        .result-item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        .result-item:last-child {
-            border-bottom: none;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button{
-            padding: 10px 20px;
+            padding: 12px 24px;
             background-color: #007bff;
             color: white;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
         }
         button:hover{
             background-color: #0056b3;
         }
-        .results {
-            margin-top: 20px;
+        .result-item {
+            padding: 12px 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .result-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
@@ -53,9 +55,9 @@
     <div class="container">
     <h2>Search Players</h2>
     <form method="POST" action="/">
-        <input type="text" name="searchValue" class="search-box" placeholder="Enter a last name to search..." required>
+        <input type="text" name="searchValue" class="search-box" placeholder="Search a player's last name (i.e Dean, Stevens, Owens, etc.)" required>
         <div class="controls-group">
-            <label for="queryMode">Optimization:</label>
+            <label for="queryMode">Query Mode:</label>
                 <select name="queryMode" id="queryMode">
                     <option value="nonIndexed">Non-Indexed</option>
                     <option value="indexed">Indexed</option>
@@ -64,8 +66,8 @@
         <div>
             <label for="queryOptions">Query Type:</label>
             <select name="queryOptions" id="queryOptions">
-                <option value="singleQuery">Single Table</option>
-                <option value="joinedQuery">Joined</option>
+                <option value="singleQuery">Players</option>
+                <option value="joinedQuery">Players and Game Stats</option>
             </select>
         </div>
         <button type="submit">Search</button>
@@ -76,9 +78,11 @@
             <h3>Search Results:</h3>
             {% for result in returnedSearchResults %}
                 <div class="result-item">
+                    <!-- Singnle Player Table Query -->
                     {% if result|length == 5 and result[0] is number %}
                         <strong>{{ result[1] }} {{result[2]}} </strong> (ID: {{result[0]}})<br>
                         <em>Position:</em> {{ result[3] }} | <em>Hometown:</em> {{result[4]}}
+                    <!-- Joined Player and Game Stats Query -->
                     {% else %}
                         <strong>{{ result[0] }} {{ result[1] }}</strong><br>
                         <em>Game Date:</em> {{ result[2] }} | <em>Stadium:</em> {{ result[3] }} | <em>Points:</em> {{ result[4] }}
