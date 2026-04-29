@@ -52,8 +52,7 @@ def index():
                     height, weight, jersey_number
                 FROM players 
                 WHERE last_name LIKE %s 
-                ORDER BY last_name ASC, first_name ASC
-                LIMIT 5;
+                ORDER BY last_name ASC, first_name ASC;
             """
         else:
             queryType = 0
@@ -64,8 +63,7 @@ def index():
                 JOIN gamestats gs
                 ON p.player_id = gs.player_id
                 WHERE p.last_name LIKE %s
-                ORDER BY p.last_name ASC, p.first_name ASC
-                LIMIT 5;
+                ORDER BY p.last_name ASC, p.first_name ASC;
             """
                                     
         # measure query time
