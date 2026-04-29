@@ -43,3 +43,27 @@ Data Population
     * Filename ./gamestats.csv
     * Options -> select Header
     * Click OK
+
+## Running the Application
+
+1. Ensure the virtual environment is running:
+    ```bash
+    # macOS/Linux
+    source .venv/bin/activate
+
+    # Windows
+    .venv/Scripts/activate
+    ```
+
+2. Start the Flask server:
+    ```bash
+    python src/app.py
+    ```
+
+3. Open your browser and navigate to `http://127.0.0.1:5000`
+
+4. Use the query tool:
+    - Enter a player last name in the search box
+    - Select **Indexed** or **Non-Indexed** optimization mode
+    - Select **Single Table** or **Joined** query type
+    - Click **Search** to run the query and see results with execution time
