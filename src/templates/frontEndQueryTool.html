@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> CSE 412: Assignment 04 Football Database Query Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }.search-box {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        button{
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover{
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h2>Search Players</h2>
+    <form method="POST" action="/">
+        <input type="text" name="searchValue" class="search-box" placeholder="Enter a last name to search..." required>
+        <div class="controls-group">
+            <label for="queryMode">Optimization:</label>
+                <select name="queryMode" id="queryMode">
+                    <option value="nonIndexed">Non-Indexed</option>
+                    <option value="indexed">Indexed</option>
+                </select>
+        </div>
+        <div>
+            <label for="queryOptions">Query Type:</label>
+            <select name="queryOptions" id="queryOptions">
+                <option value="singleQuery">Single Table</option>
+                <option value="joinedQuery">Joined</option>
+            </select>
+        </div>
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="results">
+        {% if returnedSearchResults %}
+            <h3>Search Results:</h3>
+            {% for result in returnedSearchResults %}
+                <div class="result-item">
+                    <strong>{{ result[1] }}</strong><br>
+                    {{ result[2] }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found</p>
+        {% endif %}
+        {% if executionTime %}
+            <p>Query execution time {{ "%.2f"|format(executionTime) }} ms</p>
+        {% endif %}
+        </div>
+</div>
+</body>
+</html>

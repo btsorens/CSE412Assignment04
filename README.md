@@ -10,6 +10,12 @@ pip install -r requirements.txt
 python ./src/data_generation.py
 ```
 
+Create a `.env` file in the repo root with:
+
+```
+YOUR_PASSWORD=<your postgres user password>
+```
+
 Adapted from TPC_H Data into PgAdmin + Sample Queries Doc on Canvas
 
 Step 1: Start PostgreSQL and pgAdmin
