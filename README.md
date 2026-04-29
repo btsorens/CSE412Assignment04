@@ -7,6 +7,7 @@ Design and implement a database-backed web application that demonstrates perform
 python3 -m venv .venv
 source .venv/bin/activate # or .venv/Scripts/Activate on Windows OS
 pip install -r requirements.txt
+python ./src/data_generation.py
 ```
 
 Adapted from TPC_H Data into PgAdmin + Sample Queries Doc on Canvas
@@ -26,3 +27,13 @@ Step 3:
 2. Open and run src/schema.sql:
     * Click File -> Open File -> Select src/schema.sql
     * Click Run 
+
+Data Population
+1. Right click on table players -> Import/Export Data
+    * Filename ./players.csv
+    * Options -> select Header
+    * Click OK
+2. Right clikc on table gamestats -> Import/Export Data
+    * Filename ./gamestats.csv
+    * Options -> select Header
+    * Click OK
