@@ -66,8 +66,8 @@
         <div>
             <label for="queryOptions">Query Type:</label>
             <select name="queryOptions" id="queryOptions">
-                <option value="singleQuery">Players</option>
-                <option value="joinedQuery">Players and Game Stats</option>
+                <option value="singleQuery">Players (Single Table)</option>
+                <option value="joinedQuery">Players and Game Stats (Joined Tables)</option>
             </select>
         </div>
         <button type="submit">Search</button>
@@ -76,16 +76,20 @@
     <div class="results">
         {% if returnedSearchResults %}
             <h3>Search Results:</h3>
-            {% for result in returnedSearchResults %}
+            {% for result in returnedSearchResults[:5] %}
                 <div class="result-item">
                     <!-- Singnle Player Table Query -->
-                    {% if result|length == 5 and result[0] is number %}
+                    {% if singleQuery %}
                         <strong>{{ result[1] }} {{result[2]}} </strong> (ID: {{result[0]}})<br>
-                        <em>Position:</em> {{ result[3] }} | <em>Hometown:</em> {{result[4]}}
+                        <em>Jersey Number:</em>{{ result[9] }} | <em>Position:</em> {{ result[6] }} | <em>Hometown:</em> {{result[4]}}, {{result[5]}}<br>
+                        <em>DOB:</em>{{ result[3] }} | <em>Height (in):</em>{{ result[7]}} | <em>Weight (lbs):</em>{{ result[8]}}
                     <!-- Joined Player and Game Stats Query -->
                     {% else %}
                         <strong>{{ result[0] }} {{ result[1] }}</strong><br>
-                        <em>Game Date:</em> {{ result[2] }} | <em>Stadium:</em> {{ result[3] }} | <em>Points:</em> {{ result[4] }}
+                        <em>Game Date:</em> {{ result[2] }} | <em>Stadium:</em> {{ result[3] }} | <em>Points:</em> {{ result[8] }}<br>
+                        <em>Rush Yards:</em> {{result[4]}} | <em>Rushes:</em> {{result[5]}}<br>
+                        <em>Receiving Yards:</em> {{result[6]}} | <em>Receptions:</em> {{result[7]}}<br>
+                        <em>Snaps Played:</em> {{result[9]}}
                     {% endif %}
                     </div>
             {% endfor %}
