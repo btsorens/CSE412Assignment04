@@ -46,16 +46,20 @@ def index():
         # Define search query based on options
         sqlQueryOnDatabase = ""
         if queryOptions == "singleQuery":
+            queryType = 1
             sqlQueryOnDatabase = """
-                SELECT player_id, first_name, last_name, position, hometown 
+                SELECT player_id, first_name, last_name, date_of_birth, hometown, state, position, 
+                    height, weight, jersey_number
                 FROM players 
                 WHERE last_name LIKE %s 
                 ORDER BY last_name ASC, first_name ASC
                 LIMIT 5;
             """
         else:
+            queryType = 0
             sqlQueryOnDatabase = """
-                SELECT p.first_name, p.last_name, gs.date_of_game, gs.stadium_name, gs.points
+                SELECT p.first_name, p.last_name, gs.date_of_game, gs.stadium_name, 
+                    gs.rush_yards, gs.num_rushes, gs.rec_yards, gs.num_receptions, gs.points, gs.snaps_played
                 FROM players p
                 JOIN gamestats gs
                 ON p.player_id = gs.player_id
@@ -76,7 +80,8 @@ def index():
         cursor.close()
         databaseConnection.close()
     
-    return render_template("index.html", returnedSearchResults=querySearchResults, executionTime=executionTimer)
+    return render_template("index.html", returnedSearchResults=querySearchResults, executionTime=executionTimer,
+                           singleQuery=queryType)
 
 if __name__ == "__main__":
     app.run(debug=True)
